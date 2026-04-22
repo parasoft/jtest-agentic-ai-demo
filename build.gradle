@@ -1,0 +1,43 @@
+plugins {
+    id 'application'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+//application {
+//    mainClass = 'examples.stopwatch.Stopwatch'  // Replace with your main class
+//}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Add implementation dependencies here, e.g.:
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+}
+
+test {
+    // print short tests summary
+    afterSuite { desc, result ->
+        if (!desc.parent)
+            println("Test results: ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped")
+    }
+
+    useJUnitPlatform()
+
+    // ignore test failures for demo purposes
+    ignoreFailures = true
+
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+
