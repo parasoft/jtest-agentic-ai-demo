@@ -18,4 +18,7 @@ public class ExampleLogic
         }
         _lock.unlock();
     }
+
+//    public void foo()
+//    {}
 }
