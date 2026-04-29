@@ -32,11 +32,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell.
-      - name: Run gradle
-        run: echo "Hello from GitHub Actions!"
-        #run: ./gradlew clean build
+      # Build your gradle project (This step is optional, as it is not required for code analysis).
+      - name: Build project (optional)
+        run: ./gradlew clean build
 
+      # Run example command
+      - name: Run echo command
+        run: echo "Hello from GitHub Actions!"
 
 #  test:
 #    runs-on: ubuntu-latest
