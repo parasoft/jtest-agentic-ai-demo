@@ -19,6 +19,8 @@ public class ExampleLogic
         _lock.unlock();
     }
 
-//    public void foo()
-//    {}
+//    public int add(int x, int y)
+//    {
+//        return x + y;
+//    }
 }
