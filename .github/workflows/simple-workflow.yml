@@ -46,7 +46,13 @@ jobs:
         env:
           WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
         run: |
-          echo "Running jtest AI agentic autofix..."
+          # Set-up autofix branch
+          ORIGINAL_SHA=$(git rev-parse HEAD)
+          BRANCH_NAME="autofix-$(date +'%Y-%m-%d_%H-%M-%S')"
+          git checkout -b "$BRANCH_NAME"
+          
+          # Run jtest AI agentic autofix (emulated with echo command here)
+          "$WORKFLOWS_DIR/jtest-autofix-dummy.sh"
 #  test:
 #    runs-on: ubuntu-latest
 #    steps:
