@@ -38,7 +38,7 @@ jobs:
 
       # Run example command
       - name: Run echo command
-        run: echo "Hello from GitHub Actions!!"
+        run: echo "Hello from GitHub Actions!"
 
       # emulate autofix flow
       - name: Run jtest AI agentic autofix
