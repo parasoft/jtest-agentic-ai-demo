@@ -44,8 +44,9 @@ jobs:
       - name: Run jtest AI agentic autofix
         id: run-jtest-autofix
         env:
-
-
+          WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
+        run: |
+          echo "Running jtest AI agentic autofix..."
 #  test:
 #    runs-on: ubuntu-latest
 #    steps:
