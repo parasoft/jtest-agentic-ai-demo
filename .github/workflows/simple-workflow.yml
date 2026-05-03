@@ -40,6 +40,12 @@ jobs:
       - name: Run echo command
         run: echo "Hello from GitHub Actions!!"
 
+      # emulate autofix flow
+      - name: Run jtest AI agentic autofix
+        id: run-jtest-autofix
+        env:
+
+
 #  test:
 #    runs-on: ubuntu-latest
 #    steps:
