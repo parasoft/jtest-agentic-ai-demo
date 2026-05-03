@@ -1,6 +1,9 @@
 #!/bin/bash
 
-echo `pwd`
+echo "jtest-autofix-dummy begin..."
 
-date >> ../../dummy.txt
+echo `pwd`
+date >> dummy.txt
 git status
+
+echo "jtest-autofix-dummy finished."
