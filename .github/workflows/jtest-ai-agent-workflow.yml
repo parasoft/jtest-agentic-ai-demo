@@ -1,0 +1,67 @@
+name: Simple CI
+
+on:
+  # Triggers the workflow on pull request events but only for the master (main) branch.
+  pull_request:
+    branches: [ master, main ]
+
+  # Allows you to run this workflow manually from the Actions tab.
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel.
+jobs:
+  run-jtest-gradlew:
+    name: Analyze project with jtest
+
+    # Specifies required permissions for upload-sarif action
+    permissions:
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: write
+      pull-requests: write
+
+    # Specifies the type of runner that the job will run on.
+    runs-on: self-hosted
+
+    # Steps represent a sequence of tasks that will be executed as part of the job.
+    steps:
+
+      # Checks out your repository under $GITHUB_WORKSPACE, so that your job can access it.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Build your gradle project (This step is optional, as it is not required for code analysis).
+      - name: Build project (optional)
+        run: ./gradlew clean build
+
+      # Run example command
+      - name: Run echo command
+        run: echo "Hello from GitHub Actions!"
+
+      # Run ai agent fix flow
+      - name: Run jtest ai agent fix flow
+        id: run-jtest-ai-agent-fix
+        env:
+          WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
+        run: |
+          # Set-up autofix branch
+          ORIGINAL_SHA=$(git rev-parse HEAD)
+          BRANCH_NAME="jtest-ai-agent-$(date +'%Y-%m-%d_%H-%M-%S')"
+          git checkout -b "$BRANCH_NAME"
+          
+          # Run jtest AI agent (emulated with echo command here)
+          "$WORKFLOWS_DIR/jtest-ai-agent-run.sh"
+          
+          # Only push and comment if there are new commits
+          if [ "$(git rev-parse HEAD)" != "$ORIGINAL_SHA" ]; then
+            git push -u origin HEAD
+            ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
+            BRANCH_URL="${{ github.server_url }}/${{ github.repository }}/tree/$BRANCH_NAME"
+            gh pr create --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --title "Autofix: $BRANCH_NAME" --body "Automated jtest AI agent changes"
+            PR_URL="${{ github.server_url }}/${{ github.repository }}/pull"
+            sleep 2
+            PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --state open --limit 1 | head -n 1 | cut -d' ' -f1)
+            gh pr comment ${{ github.event.pull_request.number }} --body "jtest AI agent branch: $BRANCH_URL | Pull request: $PR_URL/$PR_NUMBER"
+          fi
