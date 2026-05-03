@@ -40,34 +40,28 @@ jobs:
       - name: Run echo command
         run: echo "Hello from GitHub Actions!"
 
-      # emulate autofix flow
-      - name: Run jtest AI agentic autofix
-        id: run-jtest-autofix
+      # Run ai agent fix flow
+      - name: Run jtest ai agent fix flow
+        id: run-jtest-ai-agent-fix
         env:
           WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
         run: |
           # Set-up autofix branch
           ORIGINAL_SHA=$(git rev-parse HEAD)
-          BRANCH_NAME="autofix-$(date +'%Y-%m-%d_%H-%M-%S')"
+          BRANCH_NAME="jtest-ai-agent-$(date +'%Y-%m-%d_%H-%M-%S')"
           git checkout -b "$BRANCH_NAME"
           
-          # Run jtest AI agentic autofix (emulated with echo command here)
-          "$WORKFLOWS_DIR/jtest-autofix-dummy.sh"
+          # Run jtest AI agent (emulated with echo command here)
+          "$WORKFLOWS_DIR/jtest-ai-agent-run.sh"
           
           # Only push and comment if there are new commits
           if [ "$(git rev-parse HEAD)" != "$ORIGINAL_SHA" ]; then
             git push -u origin HEAD
             ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
             BRANCH_URL="${{ github.server_url }}/${{ github.repository }}/tree/$BRANCH_NAME"
-            gh pr create --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --title "Autofix: $BRANCH_NAME" --body "Automated jtest AI Autofix changes"
+            gh pr create --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --title "Autofix: $BRANCH_NAME" --body "Automated jtest AI agent changes"
             PR_URL="${{ github.server_url }}/${{ github.repository }}/pull"
             sleep 2
             PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --state open --limit 1 | head -n 1 | cut -d' ' -f1)
-            gh pr comment ${{ github.event.pull_request.number }} --body "jtest AI Autofix branch: $BRANCH_URL | Pull request: $PR_URL/$PR_NUMBER"
+            gh pr comment ${{ github.event.pull_request.number }} --body "jtest AI agent branch: $BRANCH_URL | Pull request: $PR_URL/$PR_NUMBER"
           fi
-#  test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Run tests
-#        run: echo "Hello from GitHub Actions!"
