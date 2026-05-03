@@ -40,15 +40,15 @@ jobs:
       - name: Run echo command
         run: echo "Hello from GitHub Actions!"
 
-      # Run ai agent fix flow
-      - name: Run jtest ai agent fix flow
-        id: run-jtest-ai-agent-fix
+      # Run jtest ai agent autofix flow
+      - name: Run jtest ai agent autofix flow
+        id: run-jtest-ai-agent-autofix
         env:
           WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
         run: |
           # Set-up autofix branch
           ORIGINAL_SHA=$(git rev-parse HEAD)
-          BRANCH_NAME="jtest-ai-agent-$(date +'%Y-%m-%d_%H-%M-%S')"
+          BRANCH_NAME="jtest-autofix-$(date +'%Y-%m-%d_%H-%M-%S')"
           git checkout -b "$BRANCH_NAME"
           
           # Run jtest AI agent (emulated with echo command here)
@@ -59,7 +59,7 @@ jobs:
             git push -u origin HEAD
             ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
             BRANCH_URL="${{ github.server_url }}/${{ github.repository }}/tree/$BRANCH_NAME"
-            gh pr create --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --title "Autofix: $BRANCH_NAME" --body "Automated jtest AI agent changes"
+            gh pr create --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --title "jtest-ai-agent: $BRANCH_NAME" --body "Automated jtest AI agent changes"
             PR_URL="${{ github.server_url }}/${{ github.repository }}/pull"
             sleep 2
             PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --state open --limit 1 | head -n 1 | cut -d' ' -f1)
