@@ -20,6 +20,8 @@ dependencies {
     // Add implementation dependencies here, e.g.:
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.15.2'
 }
 
 test {
@@ -39,5 +41,4 @@ test {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
-
 
