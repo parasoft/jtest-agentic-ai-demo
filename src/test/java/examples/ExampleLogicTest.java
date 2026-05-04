@@ -9,13 +9,14 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ExampleLogicTest {
-
+class ExampleLogicTest
+{
     @TempDir
     Path tempDir;
 
     @Test
-    void appendString_writesDataToFile() throws IOException {
+    void appendString_writesDataToFile() throws IOException
+    {
         ExampleLogic logic = new ExampleLogic();
         Path file = tempDir.resolve("test.txt");
 
