@@ -7,7 +7,8 @@ echo "jtest-autofix-dummy begin..."
 export JTEST_SKILLS_CONFIG=/home/mali/dev/git/github/jtest-agentic-ai-demo/jtest-skills.config
 
 #echo "Use jtest-static-analysis to analyse and fix violations in the project. Commit each fix separately" | codex exec --yolo
-echo "Use jtest-static-analysis to analyse and fix violations in the project. Use jtest-unit-testing to increase coverage. Commit each change separately." | codex exec --yolo
+echo "Use jtest-static-analysis to analyse and fix violations in the project. Use jtest-unit-testing to increase coverage. Commit each change separately. Create a summary and enlist in point what was changed in the project." | codex exec --yolo
+
 #copilot -p "Use jtest-static-analysis to analyse and fix violations in the project. Commit each fix separately"  --allow-all-tools  --add-dir /home/mali/dev/git/github/jtest-agentic-ai-demo
 
 #echo `pwd`
