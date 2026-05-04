@@ -17,10 +17,13 @@ public class ExampleLogic
         }
     }
 
-//    public void appendStringSafely (String file, String data) throws IOException, InterruptedException
-//    {
-//        _lock.lock();
-//        appendString(file, data);
-//        _lock.unlock();
-//    }
+    public void appendStringSafely (String file, String data) throws IOException, InterruptedException
+    {
+        _lock.lock();
+        try {
+            appendString(file, data);
+        } finally {
+            _lock.unlock();
+        }
+    }
 }
