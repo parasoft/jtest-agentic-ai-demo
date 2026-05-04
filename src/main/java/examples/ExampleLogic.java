@@ -1,5 +1,6 @@
 package examples;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
@@ -12,7 +13,19 @@ public class ExampleLogic
 
     public void appendString (String file, String data) throws IOException
     {
-        try (FileWriter writer = new FileWriter(file, true)) {
+        File f = new File(file);
+        if (!f.exists()) {
+            if (!f.createNewFile()) {
+                throw new IOException("Failed to create file");
+            }
+        }
+        if (!f.setWritable(true, true)) {
+            throw new IOException("Failed to set writable permission on file");
+        }
+        if (!f.setReadable(true, true)) {
+            throw new IOException("Failed to set readable permission on file");
+        }
+        try (FileWriter writer = new FileWriter(f, true)) {
             writer.write(data);
         }
     }
