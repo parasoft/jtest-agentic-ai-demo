@@ -12,15 +12,15 @@ public class ExampleLogic
 
     public void appendString (String file, String data) throws IOException
     {
-        _lock.lock();
         try (FileWriter writer = new FileWriter(file, true)) {
             writer.write(data);
         }
-        _lock.unlock();
     }
 
-    public int add(int x, int y)
-    {
-        return x + y;
-    }
+//    public void appendStringSafely (String file, String data) throws IOException, InterruptedException
+//    {
+//        _lock.lock();
+//        appendString(file, data);
+//        _lock.unlock();
+//    }
 }
