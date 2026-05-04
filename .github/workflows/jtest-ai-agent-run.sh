@@ -2,6 +2,10 @@
 
 echo "jtest-autofix-dummy begin..."
 
+
+# TODO - move to env
+export JTEST_SKILLS_CONFIG=/home/mali/dev/git/github/jtest-agentic-ai-demo/jtest-skills.config
+
 copilot -p "use jtest-static-analysis to analyse and fix violations in the project. Commit each fix separately" --allow-all-tools
 
 #echo `pwd`
