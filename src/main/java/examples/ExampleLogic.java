@@ -12,8 +12,8 @@ public class ExampleLogic
 
     public void appendString (String file, String data) throws IOException
     {
-        _lock.lock();
         try {
+            _lock.lock();
             try (FileWriter writer = new FileWriter(file, true)) {
                 writer.write(data);
             }
