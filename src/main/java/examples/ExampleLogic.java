@@ -19,11 +19,15 @@ public class ExampleLogic
 
     public void appendStringSafely (String file, String data) throws IOException, InterruptedException
     {
-        _lock.lock();
+        boolean lockAcquired = false;
         try {
+            _lock.lock();
+            lockAcquired = true;
             appendString(file, data);
         } finally {
-            _lock.unlock();
+            if (lockAcquired) {
+                _lock.unlock();
+            }
         }
     }
 }
