@@ -10,6 +10,10 @@ public class ExampleLogic
 {
     private Lock _lock = new ReentrantLock();
 
+    public final Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+
 
     public void appendString (String file, String data) throws IOException
     {
