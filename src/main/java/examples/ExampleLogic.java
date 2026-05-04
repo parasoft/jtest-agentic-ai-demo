@@ -17,6 +17,12 @@ public class ExampleLogic
 {
     private final Lock lock = new ReentrantLock();
 
+    @Override
+    public final Object clone() throws CloneNotSupportedException
+    {
+        throw new CloneNotSupportedException();
+    }
+
     public void appendString(String file, String data) throws IOException
     {
         Path filePath = Path.of(file).toAbsolutePath();
