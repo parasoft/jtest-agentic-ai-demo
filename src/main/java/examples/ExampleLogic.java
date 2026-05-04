@@ -35,4 +35,9 @@ public class ExampleLogic
             _lock.unlock();
         }
     }
+
+    public final Object clone() throws CloneNotSupportedException
+    {
+        throw new CloneNotSupportedException();
+    }
 }
