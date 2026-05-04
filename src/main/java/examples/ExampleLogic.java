@@ -20,7 +20,10 @@ public class ExampleLogic
     public void appendStringSafely (String file, String data) throws IOException, InterruptedException
     {
         _lock.lock();
-        appendString(file, data);
-        _lock.unlock();
+        try {
+            appendString(file, data);
+        } finally {
+            _lock.unlock();
+        }
     }
 }
