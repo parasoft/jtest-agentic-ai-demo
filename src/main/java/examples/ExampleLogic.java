@@ -3,6 +3,7 @@ package examples;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class ExampleLogic
         FileWriter writer = null;
         try {
             String datePrefix = _dateFormat.format(new Date());
-            String entry = datePrefix + MSG_SEPARATOR + message;
+            String entry = MessageFormat.format("{0}{1}{2}", datePrefix, MSG_SEPARATOR, message);
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
