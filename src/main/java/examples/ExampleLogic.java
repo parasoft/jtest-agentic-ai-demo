@@ -35,9 +35,9 @@ public class ExampleLogic
     }
 
 
-    //    public String formatMessage(String message)
-    //    {
-    //        String datePrefix = _dateFormat.format(new Date());
-    //        return datePrefix + MSG_SEPARATOR + message;
-    //    }
+        public String formatMessage(String message)
+        {
+            String datePrefix = _dateFormat.format(new Date());
+            return datePrefix + MSG_SEPARATOR + message;
+        }
 }
