@@ -28,7 +28,6 @@ public class ExampleLogic
         FileWriter writer = null;
         try {
             String datePrefix = _dateFormat.format(new Date());
-            String entry = MessageFormat.format("{0}{1}{2}", datePrefix, MSG_SEPARATOR, message);
             File outputFile = new File(filePath);
             if (!outputFile.exists() && outputFile.createNewFile()) {
                 if (!outputFile.setReadable(true, true)) {
@@ -39,7 +38,10 @@ public class ExampleLogic
                 }
             }
             writer = new FileWriter(outputFile, true);
-            writer.write(MessageFormat.format("{0}{1}", entry, NEW_LINE));
+            writer.write(datePrefix);
+            writer.write(MSG_SEPARATOR);
+            writer.write(message);
+            writer.write(NEW_LINE);
         } finally {
             if (writer != null) {
                 writer.close();
