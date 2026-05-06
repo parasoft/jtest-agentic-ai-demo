@@ -27,9 +27,9 @@ public class ExampleLogic
         FileWriter writer = null;
         try {
             String datePrefix = _dateFormat.format(new Date());
-            String entry = datePrefix + MSG_SEPARATOR + message;
+            String entry = MessageFormat.format("{0}{1}{2}", datePrefix, MSG_SEPARATOR, message);
             writer = new FileWriter(filePath, true);
-            writer.write(entry + NEW_LINE);
+            writer.write(MessageFormat.format("{0}{1}", entry, NEW_LINE));
         } finally {
             if (writer != null) {
                 writer.close();
