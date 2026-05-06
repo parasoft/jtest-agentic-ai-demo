@@ -30,7 +30,9 @@ public class ExampleLogic
             writer = new FileWriter(filePath, true);
             writer.write(entry + NEW_LINE);
         } finally {
-            writer.close();
+            if (writer != null) {
+                writer.close();
+            }
         }
     }
 
