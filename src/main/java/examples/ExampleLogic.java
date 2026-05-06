@@ -21,7 +21,7 @@ public class ExampleLogic
             String datePrefix = _dateFormat.format(new Date());
             String entry = datePrefix + MSG_SEPARATOR + message;
             writer = new FileWriter(filePath, true);
-            writer.write(entry + NEW_LINE);
+            writer.write(String.format("%s%s", entry, NEW_LINE));
         } finally {
             if (writer != null) {
                 writer.close();
