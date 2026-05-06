@@ -20,7 +20,7 @@ class ExampleLogicTest
         ExampleLogic logic = new ExampleLogic();
         Path file = tempDir.resolve("test.txt");
 
-        logic.appendMessageToFile(file.toString(), "Hello");
+        logic.appendMessageToFile(file.toFile(), "Hello");
 
         String content = Files.readString(file);
         assertTrue(content.contains("Hello"));
