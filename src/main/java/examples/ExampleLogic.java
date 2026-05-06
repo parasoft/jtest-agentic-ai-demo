@@ -42,4 +42,10 @@ public class ExampleLogic
 //        String datePrefix = _dateFormat.format(new Date());
 //        return datePrefix + MSG_SEPARATOR + message;
 //    }
+
+    @Override
+    public final Object clone() throws CloneNotSupportedException
+    {
+        throw new CloneNotSupportedException();
+    }
 }
