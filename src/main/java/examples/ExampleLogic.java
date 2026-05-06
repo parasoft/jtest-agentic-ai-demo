@@ -1,5 +1,6 @@
 package examples;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,13 @@ public class ExampleLogic
         try {
             String datePrefix = _dateFormat.format(new Date());
             String entry = datePrefix + MSG_SEPARATOR + message;
-            writer = new FileWriter(filePath, true);
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            file.setReadable(true, true);
+            file.setWritable(true, true);
+            writer = new FileWriter(file, true);
             writer.write(String.format("%s%s", entry, NEW_LINE));
         } finally {
             if (writer != null) {
