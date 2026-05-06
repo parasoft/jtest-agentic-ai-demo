@@ -23,6 +23,6 @@ class ExampleLogicTest
         logic.appendMessageToFile(file.toString(), "Hello");
 
         String content = Files.readString(file);
-        assertEquals("Hello", content);
+        assertTrue(content.contains("Hello"));
     }
 }

@@ -16,6 +16,13 @@ public class ExampleLogic
     public void appendMessageToFile(String filePath, String message)
         throws IOException
     {
+        if (filePath == null || filePath.isEmpty()) {
+            throw new IllegalArgumentException("Message cannot be null or empty");
+        }
+        if (message == null || message.isEmpty()) {
+            throw new IllegalArgumentException("Message cannot be null or empty");
+        }
+
         FileWriter writer = null;
         try {
             String datePrefix = _dateFormat.format(new Date());
@@ -26,6 +33,7 @@ public class ExampleLogic
             writer.close();
         }
     }
+
 
     //    public String formatMessage(String message)
     //    {
