@@ -23,11 +23,15 @@ public class ExampleLogic
             String datePrefix = _dateFormat.format(new Date());
             String entry = MessageFormat.format("{0}{1}{2}", datePrefix, MSG_SEPARATOR, message);
             File file = new File(filePath);
-            if (!file.exists()) {
-                file.createNewFile();
+            if (!file.exists() && !file.createNewFile()) {
+                throw new IOException(MessageFormat.format("Could not create file: {0}", filePath));
             }
-            file.setReadable(true, true);
-            file.setWritable(true, true);
+            if (!file.setReadable(true, true)) {
+                throw new IOException(MessageFormat.format("Could not set readable permission: {0}", filePath));
+            }
+            if (!file.setWritable(true, true)) {
+                throw new IOException(MessageFormat.format("Could not set writable permission: {0}", filePath));
+            }
             writer = new FileWriter(file, true);
             writer.write(String.format("%s%s", entry, NEW_LINE));
         } finally {
