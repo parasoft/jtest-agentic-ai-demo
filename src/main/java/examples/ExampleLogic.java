@@ -2,6 +2,7 @@ package examples;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,6 +41,6 @@ public class ExampleLogic
         public String formatMessage(String message)
         {
             String datePrefix = _dateFormat.format(new Date());
-            return datePrefix + MSG_SEPARATOR + message;
+            return MessageFormat.format("{0}{1}{2}", datePrefix, MSG_SEPARATOR, message);
         }
 }
