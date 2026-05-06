@@ -55,4 +55,9 @@ public class ExampleLogic
             String datePrefix = _dateFormat.format(new Date());
             return MessageFormat.format("{0}{1}{2}", datePrefix, MSG_SEPARATOR, message);
         }
+
+    public final Object clone() throws CloneNotSupportedException
+    {
+        throw new CloneNotSupportedException();
+    }
 }
