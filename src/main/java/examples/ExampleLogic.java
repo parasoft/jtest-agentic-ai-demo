@@ -1,5 +1,6 @@
 package examples;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -28,7 +29,16 @@ public class ExampleLogic
         try {
             String datePrefix = _dateFormat.format(new Date());
             String entry = MessageFormat.format("{0}{1}{2}", datePrefix, MSG_SEPARATOR, message);
-            writer = new FileWriter(filePath, true);
+            File outputFile = new File(filePath);
+            if (!outputFile.exists() && outputFile.createNewFile()) {
+                if (!outputFile.setReadable(true, true)) {
+                    throw new IOException(MessageFormat.format("Failed to set read permission on file: {0}", filePath));
+                }
+                if (!outputFile.setWritable(true, true)) {
+                    throw new IOException(MessageFormat.format("Failed to set write permission on file: {0}", filePath));
+                }
+            }
+            writer = new FileWriter(outputFile, true);
             writer.write(MessageFormat.format("{0}{1}", entry, NEW_LINE));
         } finally {
             if (writer != null) {
