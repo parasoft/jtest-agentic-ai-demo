@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ExampleLogic
 {
@@ -33,7 +34,7 @@ public class ExampleLogic
                 throw new IOException(MessageFormat.format("Could not set writable permission: {0}", filePath));
             }
             writer = new FileWriter(file, true);
-            writer.write(String.format("%s%s", entry, NEW_LINE));
+            writer.write(String.format(Locale.ROOT, "%s%s", entry, NEW_LINE));
         } finally {
             if (writer != null) {
                 writer.close();
