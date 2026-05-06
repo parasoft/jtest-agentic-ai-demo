@@ -8,10 +8,6 @@ java {
     }
 }
 
-//application {
-//    mainClass = 'examples.stopwatch.Stopwatch'  // Replace with your main class
-//}
-
 repositories {
     mavenCentral()
 }

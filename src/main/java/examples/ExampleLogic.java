@@ -2,25 +2,34 @@ package examples;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ExampleLogic
 {
-    private Lock _lock = new ReentrantLock();
+    private final String MSG_SEPARATOR = ": ";
+    private final String NEW_LINE = "\n";
+
+    private final static SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-    public void appendString (String file, String data) throws IOException
+    public void appendMessageToFile(String filePath, String message)
+        throws IOException
     {
-        try (FileWriter writer = new FileWriter(file, true)) {
-            writer.write(data);
+        FileWriter writer = null;
+        try {
+            String datePrefix = _dateFormat.format(new Date());
+            String entry = datePrefix + MSG_SEPARATOR + message;
+            writer = new FileWriter(filePath, true);
+            writer.write(entry + NEW_LINE);
+        } finally {
+            writer.close();
         }
     }
 
-//    public void appendStringSafely (String file, String data) throws IOException, InterruptedException
+//    public String formatMessage(String message)
 //    {
-//        _lock.lock();
-//        appendString(file, data);
-//        _lock.unlock();
+//        String datePrefix = _dateFormat.format(new Date());
+//        return datePrefix + MSG_SEPARATOR + message;
 //    }
 }
