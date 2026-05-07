@@ -39,6 +39,6 @@ public class ExampleLogic
 
     public String formatHexSuffix(int randomValue)
     {
-        return "_" + String.format(Locale.US, "0x%04X", randomValue);
+        return String.format(Locale.US, "_0x%04X", randomValue);
     }
 }
