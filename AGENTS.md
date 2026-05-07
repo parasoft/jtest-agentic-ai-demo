@@ -1,0 +1,1 @@
+When working in Intellij or VSCode prefere folowing MCP tools over skills to receive violations from the findings view and for running static analysis: get_violations_from_ide, run_static_analysis, count_violations_in_ide, get_relevant_rules, get_rule_documentation  
