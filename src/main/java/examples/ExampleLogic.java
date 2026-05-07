@@ -7,6 +7,7 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ExampleLogic
@@ -38,6 +39,6 @@ public class ExampleLogic
 
     public String formatHexSuffix(int randomValue)
     {
-        return "_"+String.format("0x%04X", randomValue);
+        return "_" + String.format(Locale.US, "0x%04X", randomValue);
     }
 }
