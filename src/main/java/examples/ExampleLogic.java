@@ -26,7 +26,12 @@ public class ExampleLogic
         try {
             try (Writer writer = new FileWriter(file, Charset.defaultCharset(), true)) {
                 String datePrefix = _dateFormat.format(new Date());
-                String line = datePrefix + MSG_SEPARATOR + message + NEW_LINE;
+                String line = new StringBuilder(datePrefix.length() + MSG_SEPARATOR.length() + message.length() + NEW_LINE.length())
+                    .append(datePrefix)
+                    .append(MSG_SEPARATOR)
+                    .append(message)
+                    .append(NEW_LINE)
+                    .toString();
                 writer.write(line);
             }
         } finally {
