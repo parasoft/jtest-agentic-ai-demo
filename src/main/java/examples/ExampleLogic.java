@@ -26,8 +26,9 @@ public class ExampleLogic
             String datePrefix = _dateFormat.format(new Date());
             String line = datePrefix + MSG_SEPARATOR + message + NEW_LINE;
             writer.write(line);
+        } finally {
+            _lock.unlock();
         }
-        _lock.unlock();
     }
 
     @Override
