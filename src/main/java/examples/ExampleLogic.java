@@ -30,6 +30,12 @@ public class ExampleLogic
         _lock.unlock();
     }
 
+    @Override
+    protected final Object clone() throws CloneNotSupportedException
+    {
+        throw new CloneNotSupportedException();
+    }
+
 //    public String formatHexSuffix(int randomValue)
 //    {
 //        return "_"+String.format("0x%04X", randomValue);
