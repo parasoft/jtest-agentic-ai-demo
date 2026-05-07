@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ExampleLogic
 {
-    private ReentrantLock _lock = new ReentrantLock();
+    private static final ReentrantLock _lock = new ReentrantLock();
     private final static SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final String MSG_SEPARATOR = ": ";
