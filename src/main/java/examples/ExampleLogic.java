@@ -46,4 +46,9 @@ public class ExampleLogic
     {
         return String.format(Locale.US, "_0x%04X", randomValue);
     }
+
+    public final Object clone() throws CloneNotSupportedException
+    {
+        throw new CloneNotSupportedException();
+    }
 }
