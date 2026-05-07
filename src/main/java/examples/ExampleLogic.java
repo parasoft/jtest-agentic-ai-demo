@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ExampleLogic
 {
-    private static final ReentrantLock _lock = new ReentrantLock();
+    private ReentrantLock _lock = new ReentrantLock();
     private final static SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final String MSG_SEPARATOR = ": ";
@@ -24,26 +24,15 @@ public class ExampleLogic
         _lock.lock();
         try (Writer writer = new FileWriter(file, Charset.defaultCharset(), true)) {
             String datePrefix = _dateFormat.format(new Date());
-            String line = new StringBuilder()
-                    .append(datePrefix)
-                    .append(MSG_SEPARATOR)
-                    .append(message)
-                    .append(NEW_LINE)
-                    .toString();
+            String line = datePrefix + MSG_SEPARATOR + message + NEW_LINE;
             writer.write(line);
-        } finally {
-            _lock.unlock();
         }
+        _lock.unlock();
     }
 
-    @Override
-    protected final Object clone() throws CloneNotSupportedException
+    public String formatHexSuffix(int randomValue)
     {
-        throw new CloneNotSupportedException();
-    }
 
-//    public String formatHexSuffix(int randomValue)
-//    {
-//        return "_"+String.format("0x%04X", randomValue);
-//    }
+        return "_"+String.format("0x%04X", randomValue);
+    }
 }
