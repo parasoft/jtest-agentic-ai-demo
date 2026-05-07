@@ -17,7 +17,6 @@ public class ExampleLogic
     private final String MSG_SEPARATOR = ": ";
     private final String NEW_LINE = "\n";
 
-
     public void appendMessageToFile(File file, String message)
         throws IOException
     {
@@ -30,8 +29,8 @@ public class ExampleLogic
         _lock.unlock();
     }
 
-    //    public String formatHexSuffix(int randomValue)
-    //    {
-    //        return "_"+String.format("0x%04X", randomValue);
-    //    }
+//    public String formatHexSuffix(int randomValue)
+//    {
+//        return "_"+String.format("0x%04X", randomValue);
+//    }
 }
