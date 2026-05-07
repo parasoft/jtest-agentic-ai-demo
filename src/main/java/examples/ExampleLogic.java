@@ -21,12 +21,15 @@ public class ExampleLogic
         throws IOException
     {
         _lock.lock();
-        try (Writer writer = new FileWriter(file, Charset.defaultCharset(), true)) {
-            String datePrefix = _dateFormat.format(new Date());
-            String line = datePrefix + MSG_SEPARATOR + message + NEW_LINE;
-            writer.write(line);
+        try {
+            try (Writer writer = new FileWriter(file, Charset.defaultCharset(), true)) {
+                String datePrefix = _dateFormat.format(new Date());
+                String line = datePrefix + MSG_SEPARATOR + message + NEW_LINE;
+                writer.write(line);
+            }
+        } finally {
+            _lock.unlock();
         }
-        _lock.unlock();
     }
 
     public String formatHexSuffix(int randomValue)
