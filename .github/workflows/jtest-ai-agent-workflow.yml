@@ -38,7 +38,7 @@ jobs:
 
       # Run jtest ai agent autofix flow - Linux
       - name: Run jtest ai agent autofix flow (Linux)
-        id: run-jtest-ai-agent-autofix
+        id: run-jtest-ai-agent-autofix-linux
         if: runner.os == 'Linux'
         env:
           WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
@@ -64,7 +64,7 @@ jobs:
 
       # Run jtest ai agent autofix flow - Windows
       - name: Run jtest ai agent autofix flow (Windows)
-        id: run-jtest-ai-agent-autofix
+        id: run-jtest-ai-agent-autofix-win
         if: runner.os == 'Windows'
         run: |
           # Set-up autofix branch
