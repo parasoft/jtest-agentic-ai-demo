@@ -36,18 +36,14 @@ jobs:
       - name: Build project (optional)
         run: ./gradlew clean build
 
-      # Run example command
-      - name: Run echo command
-        run: echo "Hello from GitHub Actions!"
-
-      # Run jtest ai agent autofix flow
-      - name: Run jtest ai agent autofix flow
+      # Run jtest ai agent autofix flow - Linux
+      - name: Run jtest ai agent autofix flow (Linux)
         id: run-jtest-ai-agent-autofix
+        if: runner.os == 'Linux'
         env:
           WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
         run: |
           # Set-up autofix branch
-          ORIGINAL_SHA=$(git rev-parse HEAD)
           BRANCH_NAME="jtest-autofix-$(date +'%Y-%m-%d_%H-%M-%S')"
           git checkout -b "$BRANCH_NAME"
           
@@ -55,7 +51,7 @@ jobs:
           "$WORKFLOWS_DIR/jtest-ai-agent-run.sh"
           
           # Only push and comment if there are new commits
-          if [ "$(git rev-parse HEAD)" != "$ORIGINAL_SHA" ]; then
+          if [ "$(git rev-parse HEAD)" != "$GITHUB_SHA" ]; then
             git push -u origin HEAD
             ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
             BRANCH_URL="${{ github.server_url }}/${{ github.repository }}/tree/$BRANCH_NAME"
@@ -65,3 +61,28 @@ jobs:
             PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --state open --limit 1 | head -n 1 | cut -d' ' -f1)
             gh pr comment ${{ github.event.pull_request.number }} --body "jtest AI agent branch: $BRANCH_URL | Pull request: $PR_URL/$PR_NUMBER"
           fi
+
+      # Run jtest ai agent autofix flow - Windows
+      - name: Run jtest ai agent autofix flow (Windows)
+        id: run-jtest-ai-agent-autofix
+        if: runner.os == 'Windows'
+        run: |
+          # Set-up autofix branch
+          $BranchName = "jtest-autofix-$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss')"
+          git checkout -b $BranchName
+          
+          # Run jtest AI agent
+          $env:JTEST_SKILLS_CONFIG = ${{ github.workspace }}\jtest-skills.config
+          copilot -p "Use jtest-static-analysis to analyse and fix violations in the project. Use jtest-unit-testing to increase coverage. Commit each change separately. Create a summary and enlist in point what was changed in the project."  --allow-all-tools  --add-dir ${{ github.workspace }} 
+          
+          # Only push and comment if there are new commits
+          if ((git rev-parse HEAD) -ne $env:GITHUB_SHA) {
+             git push -u origin HEAD
+             $OriginalBranch = "${{ github.event.pull_request.head.ref }}"
+             $BranchURL = "${{ github.server_url }}/${{ github.repository }}/tree/$BranchName"
+             gh pr create --head $BranchName --base $OriginalBranch --title "jtest-ai-agent: $BranchName" --body "Automated jtest AI agent changes"
+             $PRURL = "${{ github.server_url }}/${{ github.repository }}/pull"
+             Start-Sleep -Seconds 2
+             $PRNumber = (gh pr list --head $BranchName --base $OriginalBranch --state open --limit 1 | Select-Object -First 1).Split(' ')[0]
+             gh pr comment ${{ github.event.pull_request.number }} --body "jtest AI agent branch: $BranchURL | Pull request: $PRURL/$PRNumber"
+          }
