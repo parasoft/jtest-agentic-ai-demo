@@ -66,6 +66,8 @@ jobs:
       - name: Run jtest ai agent autofix flow (Windows)
         id: run-jtest-ai-agent-autofix-win
         if: runner.os == 'Windows'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Set-up autofix branch
           $BranchName = "jtest-autofix-$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss')"
@@ -83,6 +85,6 @@ jobs:
              gh pr create --head $BranchName --base $OriginalBranch --title "jtest-ai-agent: $BranchName" --body "Automated jtest AI agent changes"
              $PRURL = "${{ github.server_url }}/${{ github.repository }}/pull"
              Start-Sleep -Seconds 2
-             $PRNumber = (gh pr list --head $BranchName --base $OriginalBranch --state open --limit 1 | Select-Object -First 1).Split(' ')[0]
-             gh pr comment ${{ github.event.pull_request.number }} --body "jtest AI agent branch: $BranchURL | Pull request: $PRURL/$PRNumber"
+             $PRNumber = ${{ github.event.pull_request.number }}
+             gh pr comment $PRNumber --body "jtest AI agent branch: $BranchURL | Pull request: $PRURL/$PRNumber"
           }
