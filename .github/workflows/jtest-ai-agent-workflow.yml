@@ -86,10 +86,10 @@ jobs:
           if ((git rev-parse HEAD) -ne $env:GITHUB_SHA) {
              git push -u origin HEAD
              $OriginalBranch = "${{ github.event.pull_request.head.ref }}"
-             $BranchURL = "${{ github.server_url }}/${{ github.repository }}/tree/$BranchName"
-             gh pr create --head $BranchName --base $OriginalBranch --title "jtest-ai-agent: $BranchName" --body "Automated jtest AI agent changes"
-             $PRURL = "${{ github.server_url }}/${{ github.repository }}/pull"
+             gh pr create --repo ${{ github.repository }} --head $BranchName --base $OriginalBranch --title "jtest-ai-agent: $BranchName" --body "Automated jtest AI agent changes"
              Start-Sleep -Seconds 2
+             $PRURL = "${{ github.server_url }}/${{ github.repository }}/pull"
              $PRNumber = ${{ github.event.pull_request.number }}
+             $BranchURL = "${{ github.server_url }}/${{ github.repository }}/tree/$BranchName"
              gh pr comment $PRNumber --body "jtest AI agent branch: $BranchURL | Pull request: $PRURL/$PRNumber"
           }
