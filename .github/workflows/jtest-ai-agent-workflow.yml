@@ -43,6 +43,7 @@ jobs:
         env:
           WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
           GH_TOKEN: ${{ secrets.AGENT_PAT }}
+          AGENT_GH_PAT: ${{ secrets.AGENT_GH_PAT }}
         run: |
           # Set-up autofix branch
           BRANCH_NAME="jtest-autofix-$(date +'%Y-%m-%d_%H-%M-%S')"
@@ -58,6 +59,7 @@ jobs:
             git push -u origin HEAD
             ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
             BRANCH_URL="${{ github.server_url }}/${{ github.repository }}/tree/$BRANCH_NAME"
+            export GH_TOKEN="$AGENT_GH_PAT"
             gh pr create --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --title "jtest-ai-agent: $BRANCH_NAME" --body "Automated jtest AI agent changes"
             PR_URL="${{ github.server_url }}/${{ github.repository }}/pull"
             sleep 2
@@ -71,6 +73,7 @@ jobs:
         if: runner.os == 'Windows'
         env:
           GH_TOKEN: ${{ secrets.AGENT_PAT }}
+          AGENT_GH_PAT: ${{ secrets.AGENT_GH_PAT }}
         run: |
           # Set-up autofix branch
           $BranchName = "jtest-autofix-$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss')"
@@ -86,6 +89,7 @@ jobs:
           if ((git rev-parse HEAD) -ne $env:GITHUB_SHA) {
              git push -u origin HEAD
              $OriginalBranch = "${{ github.event.pull_request.head.ref }}"
+             $env:GH_TOKEN=$env:AGENT_GH_PAT
              gh pr create --repo ${{ github.repository }} --head $BranchName --base $OriginalBranch --title "jtest-ai-agent: $BranchName" --body "Automated jtest AI agent changes"
              Start-Sleep -Seconds 2
              $PRURL = "${{ github.server_url }}/${{ github.repository }}/pull"
