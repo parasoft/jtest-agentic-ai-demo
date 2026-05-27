@@ -15,7 +15,7 @@ public class ExampleLogic
     private final static SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final String MSG_SEPARATOR = ": ";
-    private final String NEW_LINE = "\n";
+    private final String NEW_LINE = System.lineSeparator();
 
     public void appendMessageToFile(File file, String message)
         throws IOException
