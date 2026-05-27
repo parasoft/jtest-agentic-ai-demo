@@ -67,7 +67,7 @@ jobs:
         id: run-jtest-ai-agent-autofix-win
         if: runner.os == 'Windows'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.AGENT_PAT }}
         run: |
           # Set-up autofix branch
           $BranchName = "jtest-autofix-$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss')"
