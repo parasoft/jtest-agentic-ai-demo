@@ -77,8 +77,9 @@ jobs:
           git checkout -b $BranchName
           
           # Run jtest AI agent
-          $env:JTEST_SKILLS_CONFIG = ${{ github.workspace }}\jtest-skills.config
-          Add-Content -Path $env:JTEST_SKILLS_CONFIG -Value "ANALYZED_PROJECT_PATH=${{ github.workspace }}"
+          $SkillsConfigPath = "${{ github.workspace }}\jtest-skills.config"
+          $env:JTEST_SKILLS_CONFIG = $SkillsConfigPath
+          Add-Content -Path $SkillsConfigPath -Value "ANALYZED_PROJECT_PATH=${{ github.workspace }}"
           copilot -p "Use jtest-static-analysis to analyse and fix violations in the project. Use jtest-unit-testing to increase coverage. Commit each change separately. Create a summary and enlist in point what was changed in the project."  --allow-all-tools  --add-dir ${{ github.workspace }} 
           
           # Only push and comment if there are new commits
