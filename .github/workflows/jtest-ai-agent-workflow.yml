@@ -36,32 +36,64 @@ jobs:
       - name: Build project (optional)
         run: ./gradlew clean build
 
-      # Run example command
-      - name: Run echo command
-        run: echo "Hello from GitHub Actions!"
-
-      # Run jtest ai agent autofix flow
-      - name: Run jtest ai agent autofix flow
-        id: run-jtest-ai-agent-autofix
+      # Run jtest ai agent autofix flow - Linux
+      - name: Run jtest ai agent autofix flow (Linux)
+        id: run-jtest-ai-agent-autofix-linux
+        if: runner.os == 'Linux'
         env:
           WORKFLOWS_DIR: ${{ github.workspace }}/.github/workflows
+          GH_TOKEN: ${{ secrets.AGENT_PAT }}
+          AGENT_GH_PAT: ${{ secrets.AGENT_GH_PAT }}
         run: |
           # Set-up autofix branch
-          ORIGINAL_SHA=$(git rev-parse HEAD)
           BRANCH_NAME="jtest-autofix-$(date +'%Y-%m-%d_%H-%M-%S')"
           git checkout -b "$BRANCH_NAME"
           
           # Run jtest AI agent (emulated with echo command here)
-          "$WORKFLOWS_DIR/jtest-ai-agent-run.sh"
+          export JTEST_SKILLS_CONFIG="${{ github.workspace }}/jtest-skills.config"
+          echo "ANALYZED_PROJECT_PATH=${{ github.workspace }}" >> "$JTEST_SKILLS_CONFIG"
+          copilot -p "Use jtest-static-analysis to analyse and fix violations in the project. Use jtest-unit-testing to increase coverage. Commit each change separately. Create a summary and enlist in point what was changed in the project."  --allow-all-tools  --add-dir ${{ github.workspace }}
           
           # Only push and comment if there are new commits
-          if [ "$(git rev-parse HEAD)" != "$ORIGINAL_SHA" ]; then
+          if [ "$(git rev-parse HEAD)" != "$GITHUB_SHA" ]; then
             git push -u origin HEAD
             ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
             BRANCH_URL="${{ github.server_url }}/${{ github.repository }}/tree/$BRANCH_NAME"
+            export GH_TOKEN="$AGENT_GH_PAT"
             gh pr create --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --title "jtest-ai-agent: $BRANCH_NAME" --body "Automated jtest AI agent changes"
             PR_URL="${{ github.server_url }}/${{ github.repository }}/pull"
             sleep 2
             PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$ORIGINAL_BRANCH" --state open --limit 1 | head -n 1 | cut -d' ' -f1)
             gh pr comment ${{ github.event.pull_request.number }} --body "jtest AI agent branch: $BRANCH_URL | Pull request: $PR_URL/$PR_NUMBER"
           fi
+
+      # Run jtest ai agent autofix flow - Windows
+      - name: Run jtest ai agent autofix flow (Windows)
+        id: run-jtest-ai-agent-autofix-win
+        if: runner.os == 'Windows'
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_PAT }}
+          AGENT_GH_PAT: ${{ secrets.AGENT_GH_PAT }}
+        run: |
+          # Set-up autofix branch
+          $BranchName = "jtest-autofix-$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss')"
+          git checkout -b $BranchName
+          
+          # Run jtest AI agent
+          $SkillsConfigPath = "${{ github.workspace }}\jtest-skills.config"
+          $env:JTEST_SKILLS_CONFIG = $SkillsConfigPath
+          Add-Content -Path $SkillsConfigPath -Value "ANALYZED_PROJECT_PATH=${{ github.workspace }}"
+          copilot -p "Use jtest-static-analysis to analyse and fix violations in the project. Use jtest-unit-testing to increase coverage. Commit each change separately. Create a summary and enlist in point what was changed in the project."  --allow-all-tools  --add-dir ${{ github.workspace }} 
+          
+          # Only push and comment if there are new commits
+          if ((git rev-parse HEAD) -ne $env:GITHUB_SHA) {
+             git push -u origin HEAD
+             $OriginalBranch = "${{ github.event.pull_request.head.ref }}"
+             $env:GH_TOKEN=$env:AGENT_GH_PAT
+             gh pr create --repo ${{ github.repository }} --head $BranchName --base $OriginalBranch --title "jtest-ai-agent: $BranchName" --body "Automated jtest AI agent changes"
+             Start-Sleep -Seconds 2
+             $PRURL = "${{ github.server_url }}/${{ github.repository }}/pull"
+             $PRNumber = ${{ github.event.pull_request.number }}
+             $BranchURL = "${{ github.server_url }}/${{ github.repository }}/tree/$BranchName"
+             gh pr comment $PRNumber --body "jtest AI agent branch: $BranchURL | Pull request: $PRURL/$PRNumber"
+          }
