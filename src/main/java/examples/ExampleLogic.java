@@ -14,8 +14,8 @@ public class ExampleLogic
     private ReentrantLock _lock = new ReentrantLock();
     private final static SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private final String MSG_SEPARATOR = ": ";
-    private final String NEW_LINE = "\n";
+    private static final String MSG_SEPARATOR = ": ";
+    private static final String NEW_LINE = System.lineSeparator();
 
     public void appendMessageToFile(File file, String message)
         throws IOException
