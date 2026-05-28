@@ -29,8 +29,8 @@ public class ExampleLogic
         _lock.unlock();
     }
 
-//    public String formatHexSuffix(int randomValue)
-//    {
-//        return "_"+String.format("0x%04X", randomValue);
-//    }
+    public String formatHexSuffix(int randomValue)
+    {
+        return "_"+String.format("0x%04X", randomValue);
+    }
 }
